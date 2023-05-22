@@ -1,80 +1,87 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef _SHELL_H_
+#define _SHELL_H_
 
-/*********** LIBRARIES ***********/
-
-#include <stdio.h>
-#include <unistd.h>
 #include <sys/types.h>
-#include <sys/wait.h>
 #include <sys/stat.h>
-#include <dirent.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdarg.h>
-#include <limits.h>
+#include <signal.h>
 
-extern char **environ;
 
-/**
- * struct PATH_DIR - path of directory
- * @name: name of directory
- * @next: next path
- */
-typedef struct PATH_DIR
-{
-	char *name;
-	struct PATH_DIR *next;
-} PATH_DIR;
+/*global variables*/
 
-/**
- * struct linked - a single directory node
- * @dir: directory's name
- * @first: first directory
- * @next: next directory
- * @last: last directory
- */
-typedef	struct	linked
-{
-	char	*dir;
-	struct linked *next;
-	struct linked *first;
-	struct linked *last;
-} linked;
+char **create_env(char *envp[]);
+void _updateoldpwd(char *buf, char **myenv);
+void _updatepwd(char *buf, char **myenv);
 
-/*********** FUNCTIONS ***********/
+/*setenv*/
+int _issetenv(char **p, char ***myenv, int *e, int loop, char *v[]);
+void _setenv(char **p, char ***myenv, int *e, int loop, char *v[]);
+void _setenvcreat(char ***myenv, int *e, char *entirenv);
 
-int		execute_command(char *argv[]);
-void		free_all(char *line, char **tokens_list);
-char		*_getenv(const char *key);
-char		**dup_environ();
-void		*_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-void		create_linkedlist(void);
-void		free_list(linked *h);
-int		cd(char **commandline, char *path);
-int		cd_exec(char **args);
-int		_setenv(const char *name, const char *value, int overwrite);
-int		_unsetenv(const char *name);
-char		*prompt_command(void);
-char		**split_str_to_arr(char *line);
-char		*search_exec(char *first_arg);
-int		builtin_exec(char **args, char *line);
-int		builtin_exec2(char **args);
-char		*_memcpy(char *dest, char *src, unsigned int n);
-void		printenv(void);
-int		_putchar(char c);
-void		print_number(int n);
-void		print_error(char **commandline, char *command, int error);
-void		write_program_name(char *program_name);
-void		write_error(char *message);
-char		*_strcpy(char *dest, char *src);
-char		*_strncpy(char *dest, char *src, int n);
-int		_strlen(const char *s);
-char		*_strchr(char *s, char c);
-char		*_strdup(char *str);
-char		*_strcat(char *dest, const char *src);
-int		_strcmp(char *s1, char *s2);
-int		_strncmp(const char *s1, const char *s2, size_t n);
-int		stat_to_int(char *s);
+/* unsetenv*/
+int _isunsetenv(char **p, char **myenv, int *e, int loop, char *v[]);
+void _unsetenv(char **p, char **myenv, int *e, int loop, char *v[]);
+void _errorenv(char **p);
+
+/* shell functions*/
+void _noargv(char *argv[], char *envp[]);
+void _yesargv(char *argv[], char *envp[]);
+void functions(char *line, int loop, char *argv[], char ***m, int *e, char *f);
+int rev(char **p, int L, char *li, char **v, char ***m, int *e, char *f);
+char *str_concat(char *s1, char *s2);
+int _strlen(char *s);
+void *_realloc(char *ptr, unsigned int old_size, unsigned int new_size);
+char *_getline(int *a, char **m, int e);
+char  *_getlineav(int *a, char **m, int e, char **av);
+char **parsing(char *line);
+char *_comments(char *line);
+int semicolon(char *line, int loop, char **argv);
+int currentstatus(int *status);
+
+/*char _getline_av(char *buffer);*/
+void free_grid(char **grid, int height);
+void _frk(char **p, char *l, int a, int L, char **v, int e, char **m, char *f);
+void *_calloc(unsigned int nmemb, unsigned int size);
+char **checkbin(char **b, char **m);
+void *_realloc2(char *a, char *p, unsigned int old, unsigned int new_size);
+int  _isexit(char **p, int L, char *l, char **v, char **m, char *f);
+void _signal(int s);
+int _isenv(char **p, char **myenv);
+void _env(char **myenv);
+void _cd(char **a, int loop, char *v[], char **myenv);
+int _iscd(char **p, int loop, char *v[], char **myenv);
+char *_gethome(char **m);
+char *_changepwd(void);
+char *_changeoldpwd(void);
+char *_getpwd(char **m);
+int _atoi(char *s);
+char *_strtoky(char *s, char *d);
+char *_strtoky2(char *s, char *d);
+
+#define SIZE 1024
+
+/* help files*/
+int _ishelp(char **p, int loop, char *v[], char **m);
+void _help_builtin(char **p, int loop, char *v[], char **m);
+void _help(char **p, int loop, char *v[], char **m);
+ssize_t read_help(char **m);
+ssize_t read_cdhelp(char **m);
+ssize_t read_exithelp(char **m);
+ssize_t read_helphelp(char **m);
+
+/* errors */
+void _put_err(char **p, int loop, int sig, char *v[]);
+void _builtinerr(char **p);
+void _builtinerr2(char **p);
+void _errorcd(char **p);
+void _errorexit(char **p);
+void _errorhelp(char **p);
+void _errorgarbage(char **p);
+void print_number(int n);
 
 #endif
