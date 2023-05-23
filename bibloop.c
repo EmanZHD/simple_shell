@@ -114,7 +114,7 @@ void fnd_cmd(info_t *info)
 		else if (*(info->arg) != '\n')
 		{
 			info->stat = 127;
-			prnt_error(info, "not found\n");
+			prnt_error(info, ":) not found\n");
 		}
 	}
 }
@@ -132,7 +132,7 @@ void fork_cmd(info_t *info)
 	if (child_pid == -1)
 	{
 
-		perror("Error:");
+		perror(" :) Error:");
 		return;
 	}
 	if (child_pid == 0)
