@@ -1,140 +1,140 @@
 #include "shell.h"
 
-/**
- * _erratoi - converts a string to an integer
- * @s: the string to be converted
- * Return: 0 if no numbers in string, converted number otherwise
- *       -1 on error
- */
-int _erratoi(char *s)
-{
-	int i = 0;
-	unsigned long int result = 0;
+/****************** Done By Imane ZAHID & Ghita BOUZRBAY ******************/
 
-	if (*s == '+')
-		s++;  /* TODO: why does this make main return 255? */
-	for (i = 0;  s[i] != '\0'; i++)
+/**
+ * _erratoi - this function converts a string to an integer
+ * @str: string to be converted
+ * Return: return 0 if no numbers in string
+ * converted number otherwise -1 on error
+ */
+int _erratoi(char *str)
+{
+	int a = 0;
+	unsigned long int rslt = 0;
+
+	if (*str == '+')
+		str++;
+	for (a = 0;  str[a] != '\0'; a++)
 	{
-		if (s[i] >= '0' && s[i] <= '9')
+		if (str[a] >= '0' && str[a] <= '9')
 		{
-			result *= 10;
-			result += (s[i] - '0');
-			if (result > INT_MAX)
+			rslt *= 10;
+			rslt += (str[a] - '0');
+			if (rslt > INT_MAX)
 				return (-1);
 		}
 		else
 			return (-1);
 	}
-	return (result);
+	return (rslt);
 }
 
 /**
- * print_error - prints an error message
- * @info: the parameter & return info struct
- * @estr: string containing specified error type
- * Return: 0 if no numbers in string, converted number otherwise
- *        -1 on error
+ * prnt_error - this function prints an error message
+ * @info: parameter & return info struct
+ * @estr: the string containing specified error type
+ * Return: return 0 if no numbers in string
+ * converted number otherwise -1 on error
  */
-void print_error(info_t *info, char *estr)
+void prnt_error(info_t *info, char *estr)
 {
-	_eputs(info->fname);
-	_eputs(": ");
-	print_d(info->line_count, STDERR_FILENO);
-	_eputs(": ");
-	_eputs(info->argv[0]);
-	_eputs(": ");
-	_eputs(estr);
+	_epts(info->fname);
+	_epts(": ");
+	prnt_d(info->ln_count, STDERR_FILENO);
+	_epts(": ");
+	_epts(info->argv[0]);
+	_epts(": ");
+	_epts(estr);
 }
 
 /**
- * print_d - function prints a decimal (integer) number (base 10)
- * @input: the input
- * @fd: the filedescriptor to write to
- *
- * Return: number of characters printed
+ * prnt_d - this function prints a decimal (integer) number (base 10)
+ * @input: input
+ * @fdd:filedescriptor to write to
+ * Return: return number of characters printed
  */
-int print_d(int input, int fd)
+int prnt_d(int input, int fdd)
 {
-	int (*__putchar)(char) = _putchar;
-	int i, count = 0;
+	int (*__ptchar)(char) = _ptchar;
+	int a, count = 0;
 	unsigned int _abs_, current;
 
-	if (fd == STDERR_FILENO)
-		__putchar = _eputchar;
+	if (fdd == STDERR_FILENO)
+		__ptchar = _eptchar;
 	if (input < 0)
 	{
 		_abs_ = -input;
-		__putchar('-');
+		__ptchar('-');
 		count++;
 	}
 	else
 		_abs_ = input;
 	current = _abs_;
-	for (i = 1000000000; i > 1; i /= 10)
+	for (a = 1000000000; a > 1; a /= 10)
 	{
-		if (_abs_ / i)
+		if (_abs_ / a)
 		{
-			__putchar('0' + current / i);
+			__ptchar('0' + current / a);
 			count++;
 		}
-		current %= i;
+		current %= a;
 	}
-	__putchar('0' + current);
+	__ptchar('0' + current);
 	count++;
 
 	return (count);
 }
 
 /**
- * convert_number - converter function, a clone of itoa
- * @num: number
- * @base: base
- * @flags: argument flags
- *
- * Return: string
+ * cnvrt_number - this function converter function
+ * a clone of itoa
+ * @numb: the number
+ * @base: the base
+ * @flag: the argument flags
+ * Return: return string
  */
-char *convert_number(long int num, int base, int flags)
+char *cnvrt_number(long int numb, int base, int flag)
 {
 	static char *array;
 	static char buffer[50];
-	char sign = 0;
-	char *ptr;
-	unsigned long n = num;
+	char signl = 0;
+	char *pt;
+	unsigned long m = numb;
 
-	if (!(flags & CONVERT_UNSIGNED) && num < 0)
+	if (!(flag & CONVERT_UNSIGNED) && numb < 0)
 	{
-		n = -num;
-		sign = '-';
+		m = -numb;
+		signl = '-';
 
 	}
-	array = flags & CONVERT_LOWERCASE ? "0123456789abcdef" : "0123456789ABCDEF";
-	ptr = &buffer[49];
-	*ptr = '\0';
+	array = flag & CONVERT_LOWERCASE ? "0123456789abcdef" : "0123456789ABCDEF";
+	pt = &buffer[49];
+	*pt = '\0';
 
 	do	{
-		*--ptr = array[n % base];
-		n /= base;
-	} while (n != 0);
+		*--pt = array[m % base];
+		m /= base;
+	} while (m != 0);
 
-	if (sign)
-		*--ptr = sign;
-	return (ptr);
+	if (signl)
+		*--pt = signl;
+	return (pt);
 }
 
 /**
- * remove_comments - function replaces first instance of '#' with '\0'
- * @buf: address of the string to modify
- *
- * Return: Always 0;
+ * rmv_comments - this function replaces first instance of '#' with '\0'
+ * @bufr: the address of the string to modify
+ * Return: return always 0;
  */
-void remove_comments(char *buf)
+void rmv_comments(char *bufr)
 {
-	int i;
+	int a;
 
-	for (i = 0; buf[i] != '\0'; i++)
-		if (buf[i] == '#' && (!i || buf[i - 1] == ' '))
+	for (a = 0; bufr[a] != '\0'; a++)
+		if (bufr[a] == '#' && (!a || bufr[a - 1] == ' '))
 		{
-			buf[i] = '\0';
+			bufr[a] = '\0';
 			break;
 		}
 }
