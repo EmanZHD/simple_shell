@@ -30,7 +30,7 @@
 #define CONVERT_LOWERCASE	1
 #define CONVERT_UNSIGNED	2
 
-/* 1 FOR getline() */
+/*** 1 FOR getline() ***/
 #define USE_GETLINE 0
 #define USE_STRTOK 0
 
@@ -41,7 +41,7 @@ extern char **environ;
 
 
 /**
- * struct liststr - this function for singly linked list
+ * struct liststr - singly linked list
  * @num: the number field
  * @str: a string
  * @next: points to the next node
@@ -54,7 +54,7 @@ typedef struct liststr
 } list_t;
 
 /**
- * struct passinfo - this function for contains pseudo-arguements to pass into a function,
+ * struct passinfo - contains pseudo-arguements to pass into a function,
  * allowing uniform prototype for function pointer struct
  * @arg: a string generated from getline containing arguements
  * @argv:an array of strings generated from arg
@@ -103,7 +103,7 @@ typedef struct passinfo
 		0, 0, 0}
 
 /**
- * struct builtin - this function for contains a builtin string and related function
+ * struct builtin - contains a builtin string and related function
  * @type: the builtin command flag
  * @func: the function
  */
@@ -114,107 +114,107 @@ typedef struct builtin
 } builtin_table;
 
 
-/* FOR shloop.c */
+/*** FOR shloop.c ***/
 int hsh(info_t *, char **);
 int find_builtin(info_t *);
 void find_cmd(info_t *);
 void fork_cmd(info_t *);
 
-/* FOR prsr.c */
+/*** FOR prsr.c ***/
 int is_cmd(info_t *, char *);
 char *dup_chars(char *, int, int);
 char *find_path(info_t *, char *, char *);
 
-/* FOR loophsh.c */
+/*** FOR loophsh.c ***/
 int loophsh(char **);
 
-/* FOR errs00.c */
+/*** FOR errs00.c ***/
 void _eputs(char *);
 int _eputchar(char);
 int _putfd(char c, int fd);
 int _putsfd(char *str, int fd);
 
-/* FOR str00.c */
+/*** FOR str00.c ***/
 int _strlen(char *);
 int _strcmp(char *, char *);
 char *starts_with(const char *, const char *);
 char *_strcat(char *, char *);
 
-/* FOR str01.c */
+/*** FOR str01.c ***/
 char *_strcpy(char *, char *);
 char *_strdup(const char *);
 void _puts(char *);
 int _putchar(char);
 
-/* FOR exits.c */
+/*** FOR exits.c ***/
 char *_strncpy(char *, char *, int);
 char *_strncat(char *, char *, int);
 char *_strchr(char *, char);
 
-/* FOR tokenfile.c */
+/*** FOR tokenfile.c ***/
 char **strtow(char *, char *);
 char **strtow2(char *, char);
 
-/* FOR realloc.c */
+/*** FOR realloc.c ***/
 char *_memset(char *, char, unsigned int);
 void ffree(char **);
 void *_realloc(void *, unsigned int, unsigned int);
 
-/* FOR memfile.c */
+/*** FOR memfile.c ***/
 int bfree(void **);
 
-/* FOR atoi.c */
+/*** FOR atoi.c ***/
 int interactive(info_t *);
 int is_delim(char, char *);
 int _isalpha(int);
 int _atoi(char *);
 
-/* FOR errs01.c */
+/*** FOR errs01.c ***/
 int _erratoi(char *);
 void print_error(info_t *, char *);
 int print_d(int, int);
 char *convert_number(long int, int, int);
 void remove_comments(char *);
 
-/* FOR built00.c */
+/*** FOR built00.c ***/
 int _myexit(info_t *);
 int _mycd(info_t *);
 int _myhelp(info_t *);
 
-/* FOR built01.c */
+/*** FOR built01.c ***/
 int _myhistory(info_t *);
 int _myalias(info_t *);
 
-/* FOR getln.c */
+/*** FOR getln.c ***/
 ssize_t get_input(info_t *);
 int _getline(info_t *, char **, size_t *);
 void sigintHandler(int);
 
-/* FOR getinf.c */
+/*** FOR getinf.c ***/
 void clear_info(info_t *);
 void set_info(info_t *, char **);
 void free_info(info_t *, int);
 
-/* FOR envr.c */
+/*** FOR envr.c ***/
 char *_getenv(info_t *, const char *);
 int _myenv(info_t *);
 int _mysetenv(info_t *);
 int _myunsetenv(info_t *);
 int populate_env_list(info_t *);
 
-/* FOR getenvr.c */
+/*** FOR getenvr.c ***/
 char **get_environ(info_t *);
 int _unsetenv(info_t *, char *);
 int _setenv(info_t *, char *, char *);
 
-/* FOR hstry.c */
+/*** FOR hstry.c ***/
 char *get_history_file(info_t *info);
 int write_history(info_t *info);
 int read_history(info_t *info);
 int build_history_list(info_t *info, char *buf, int linecount);
 int renumber_history(info_t *info);
 
-/* FOR ls00.c */
+/*** FOR ls00.c ***/
 list_t *add_node(list_t **, const char *, int);
 list_t *add_node_end(list_t **, const char *, int);
 size_t print_list_str(const list_t *);
