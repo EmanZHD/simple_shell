@@ -178,9 +178,9 @@ char *cnvrt_numb(long int, int, int);
 void rmv_comments(char *);
 
 /*** FOR built00.c ***/
-int _myexit(info_t *);
-int _mycd(info_t *);
-int _myhelp(info_t *);
+int _forexit(info_t *);
+int _forchd(info_t *);
+int _forhelp(info_t *);
 
 /*** FOR built01.c ***/
 int _myhistry(info_t *);

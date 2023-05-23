@@ -57,13 +57,13 @@ int fnd_builtin(info_t *info)
 {
 	int r, built_in_ret = -1;
 	builtin_table builtintbl[] = {
-		{"exit", _myexit},
+		{"exit", _forexit},
 		{"envr", _myenvr},
-		{"help", _myhelp},
+		{"help", _forhelp},
 		{"histry", _myhistry},
 		{"setenvr", _mysetenvr},
 		{"unsetenvr", _myunsetenvr},
-		{"cd", _mycd},
+		{"cd", _forchd},
 		{"alia", _myalia},
 		{NULL, NULL}
 	};
