@@ -1,74 +1,76 @@
 #include "shell.h"
 
+/****************** Done By Imane ZAHID & Ghita BOUZRBAY ******************/
+
 /**
- * clear_info - initializes info_t struct
- * @info: struct address
+ * clear_inf - this function initializes info_t struct
+ * @info: the struct address
  */
-void clear_info(info_t *info)
+void clear_inf(info_t *info)
 {
 	info->arg = NULL;
 	info->argv = NULL;
-	info->path = NULL;
+	info->pat = NULL;
 	info->argc = 0;
 }
 
 /**
- * set_info - initializes info_t struct
- * @info: struct address
- * @av: argument vector
+ * set_inf - this function initializes info_t struct
+ * @info: the struct address
+ * @av: the argument vector
  */
-void set_info(info_t *info, char **av)
+void set_inf(info_t *info, char **av)
 {
-	int i = 0;
+	int a = 0;
 
 	info->fname = av[0];
 	if (info->arg)
 	{
-		info->argv = strtow(info->arg, " \t");
+		info->argv = strgtow(info->arg, " \t");
 		if (!info->argv)
 		{
 			info->argv = malloc(sizeof(char *) * 2);
 			if (info->argv)
 			{
-				info->argv[0] = _strdup(info->arg);
+				info->argv[0] = _strgdup(info->arg);
 				info->argv[1] = NULL;
 			}
 		}
-		for (i = 0; info->argv && info->argv[i]; i++)
+		for (a = 0; info->argv && info->argv[a]; a++)
 			;
-		info->argc = i;
+		info->argc = a;
 
-		replace_alias(info);
+		replace_alia(info);
 		replace_vars(info);
 	}
 }
 
 /**
- * free_info - frees info_t struct fields
- * @info: struct address
- * @all: true if freeing all fields
+ * free_inf - this function frees info_t struct fields
+ * @info: the struct address
+ * @alfd: it's true if freeing all fields
  */
-void free_info(info_t *info, int all)
+void free_inf(info_t *info, int alfd)
 {
-	ffree(info->argv);
+	flfree(info->argv);
 	info->argv = NULL;
-	info->path = NULL;
-	if (all)
+	info->pat = NULL;
+	if (alfd)
 	{
-		if (!info->cmd_buf)
+		if (!info->cmd_bufr)
 			free(info->arg);
-		if (info->env)
-			free_list(&(info->env));
-		if (info->history)
-			free_list(&(info->history));
-		if (info->alias)
-			free_list(&(info->alias));
-		ffree(info->environ);
+		if (info->envr)
+			free_list(&(info->envr));
+		if (info->histry)
+			free_list(&(info->histry));
+		if (info->alia)
+			free_list(&(info->alia));
+		flfree(info->environ);
 			info->environ = NULL;
-		bfree((void **)info->cmd_buf);
-		if (info->readfd > 2)
-			close(info->readfd);
-		_putchar(BUF_FLUSH);
+		bffree((void **)info->cmd_bufr);
+		if (info->readfdd > 2)
+			close(info->readfdd);
+		_ptchar(BUF_FLUSH);
 	}
 }
 

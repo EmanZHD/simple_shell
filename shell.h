@@ -192,9 +192,9 @@ int _getln(info_t *, char **, size_t *);
 void sigintHandler(int);
 
 /*** FOR getinf.c ***/
-void clear_info(info_t *);
-void set_info(info_t *, char **);
-void free_info(info_t *, int);
+void clear_inf(info_t *);
+void set_inf(info_t *, char **);
+void free_inf(info_t *, int);
 
 /*** FOR envr.c ***/
 char *_getenvr(info_t *, const char *);

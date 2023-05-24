@@ -1,94 +1,96 @@
 #include "shell.h"
 
+/****************** Done By Imane ZAHID & Ghita BOUZRBAY ******************/
+
 /**
- * get_environ - returns the string array copy of our environ
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
- * Return: Always 0
+ * get_environ - this function returns the string array copy of our environ
+ * @info: the structure containing potential arguments.
+ * this used to maintain constant function prototype
+ * Return: return always 0
  */
 char **get_environ(info_t *info)
 {
-	if (!info->environ || info->env_changed)
+	if (!info->environ || info->envr_changed)
 	{
-		info->environ = list_to_strings(info->env);
-		info->env_changed = 0;
+		info->environ = list_to_strings(info->envr);
+		info->envr_changed = 0;
 	}
 
 	return (info->environ);
 }
 
 /**
- * _unsetenv - Remove an environment variable
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
- *  Return: 1 on delete, 0 otherwise
- * @var: the string env var property
+ * _unsetenvr - this function remove an environment variable
+ * @info: the structure containing potential arguments.
+ * this used to maintain constant function prototype
+ * Return: return 1 on delete, 0 otherwise
+ * @varenv: string env var property
  */
-int _unsetenv(info_t *info, char *var)
+int _unsetenvr(info_t *info, char *varenv)
 {
-	list_t *node = info->env;
-	size_t i = 0;
-	char *p;
+	list_t *nd = info->envr;
+	size_t a = 0;
+	char *pt;
 
-	if (!node || !var)
+	if (!nd || !varenv)
 		return (0);
 
-	while (node)
+	while (nd)
 	{
-		p = starts_with(node->str, var);
-		if (p && *p == '=')
+		pt = starts_with(nd->strg, varenv);
+		if (pt && *pt == '=')
 		{
-			info->env_changed = delete_node_at_index(&(info->env), i);
-			i = 0;
-			node = info->env;
+			info->envr_changed = delete_nd_at_index(&(info->envr), a);
+			a = 0;
+			nd = info->envr;
 			continue;
 		}
-		node = node->next;
-		i++;
+		nd = nd->nxt;
+		a++;
 	}
-	return (info->env_changed);
+	return (info->envr_changed);
 }
 
 /**
- * _setenv - Initialize a new environment variable,
- *             or modify an existing one
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
- * @var: the string env var property
- * @value: the string env var value
- *  Return: Always 0
+ * _setenvr - Initialize a new environment variable
+ * or modify an existing one
+ * @info: the tructure containing potential arguments.
+ * this used to maintain constant function prototype.
+ * @varenv: string envr varenv property
+ * @val: string envr varenv value
+ * Return: return this always 0
  */
-int _setenv(info_t *info, char *var, char *value)
+int _setenvr(info_t *info, char *varenv, char *val)
 {
-	char *buf = NULL;
-	list_t *node;
-	char *p;
+	char *bufr = NULL;
+	list_t *nd;
+	char *pt;
 
-	if (!var || !value)
+	if (!varenv || !val)
 		return (0);
 
-	buf = malloc(_strlen(var) + _strlen(value) + 2);
-	if (!buf)
+	bufr = malloc(_strglen(varenv) + _strglen(val) + 2);
+	if (!bufr)
 		return (1);
-	_strcpy(buf, var);
-	_strcat(buf, "=");
-	_strcat(buf, value);
-	node = info->env;
-	while (node)
+	_strgcpy(bufr, varenv);
+	_strgcat(bufr, "=");
+	_strgcat(bufr, val);
+	nd = info->envr;
+	while (nd)
 	{
-		p = starts_with(node->str, var);
-		if (p && *p == '=')
+		pt = starts_with(nd->strg, varenv);
+		if (pt && *pt == '=')
 		{
-			free(node->str);
-			node->str = buf;
-			info->env_changed = 1;
+			free(nd->strg);
+			nd->strg = bufr;
+			info->envr_changed = 1;
 			return (0);
 		}
-		node = node->next;
+		nd = nd->nxt;
 	}
-	add_node_end(&(info->env), buf, 0);
-	free(buf);
-	info->env_changed = 1;
+	add_nd_end(&(info->envr), bufr, 0);
+	free(bufr);
+	info->envr_changed = 1;
 	return (0);
 }
 
