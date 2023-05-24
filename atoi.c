@@ -1,161 +1,77 @@
 #include "shell.h"
 
-/**
- * hsh - main shell loop
- * @info: the parameter & return info struct
- * @av: the argument vector from main()
- *
- * Return: 0 on success, 1 on error, or error code
- */
-int hsh(info_t *info, char **av)
-{
-	ssize_t r = 0;
-	int built_ret = 0;
+/****************** Done By Imane ZAHID & Ghita BOUZRBAY ******************/
 
-	while (r != -1 && built_ret != -2)
-	{
-		clear_info(info);
-		if (intractive(info))
-			_pts("$ ");
-		_eptchar(BUF_FLUSH);
-		r = get_inpt(info);
-		if (r != -1)
-		{
-			set_info(info, av);
-			built_ret = fnd_built(info);
-			if (built_ret == -1)
-				fnd_cmd(info);
-		}
-		else if (intractive(info))
-			_ptchar('\n');
-		free_info(info, 0);
-	}
-	write_histry(info);
-	free_info(info, 1);
-	if (!intractive(info) && info->stat)
-		exit(info->stat);
-	if (built_ret == -2)
-	{
-		if (info->err_numb == -1)
-			exit(info->stat);
-		exit(info->err_numb);
-	}
-	return (built_ret);
+/**
+ * intractive - this function returns true if shell is interactive mode
+ * @info: the struct address
+ * Return: return 1 if interactive mode, 0 otherwise
+ */
+int intractive(info_t *info)
+{
+	return (isatty(STDIN_FILENO) && info->readfdd <= 2);
 }
 
 /**
- * fnd_built - finds a builtin command
- * @info: the parameter & return info struct
- *
- * Return: -1 if built not found,
- * 0 if built executed successfully,
- * 1 if built found but not successful,
- * 2 if built signals exit()
+ * is_delm - this function checks if character is a delimeter
+ * @ch: char to check
+ * @delm: delimeter string
+ * Return: return 1 if true, 0 if false
  */
-int fnd_built(info_t *info)
+int is_delm(char ch, char *delm)
 {
-	int i, built_in_ret = -1;
-	builtin_table builtintbl[] = {
-		{"exit", _myexit},
-		{"envr", _myenvr},
-		{"help", _myhelp},
-		{"histry", _myhistry},
-		{"setenvr", _mysetenvr},
-		{"unsetenvr", _myunsetenvr},
-		{"cd", _mycd},
-		{"alia", _myalia},
-		{NULL, NULL}
-	};
-
-	for (i = 0; builtintbl[i].type; i++)
-		if (_strgcmp(info->argv[0], builtintbl[i].type) == 0)
-		{
-			info->ln_count++;
-			built_in_ret = builtintbl[i].funct(info);
-			break;
-		}
-	return (built_in_ret);
+	while (*delm)
+		if (*delm++ == ch)
+			return (1);
+	return (0);
 }
 
 /**
- * fnd_cmd - finds a command in PATH
- * @info: the parameter & return info struct
- *
- * Return: void
+ * _alpha - this function checks for alphabetic character
+ * @ch: character to input
+ * Return: return 1 if c is alphabetic, 0 otherwise
  */
-void fnd_cmd(info_t *info)
+
+int _alpha(int ch)
 {
-	char *pat = NULL;
-	int i, k;
-
-	info->pat = info->argv[0];
-	if (info->lncount_flag == 1)
-	{
-		info->ln_count++;
-		info->lncount_flag = 0;
-	}
-	for (i = 0, k = 0; info->arg[i]; i++)
-		if (!is_delm(info->arg[i], " \t\n"))
-			k++;
-	if (!k)
-		return;
-
-	pat = fnd_pat(info, _getenvr(info, "PATH="), info->argv[0]);
-	if (pat)
-	{
-		info->pat = pat;
-		fork_cmd(info);
-	}
+	if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z'))
+		return (1);
 	else
-	{
-		if ((intractive(info) || _getenvr(info, "PATH=")
-					|| info->argv[0][0] == '/') && is_cmd(info, info->argv[0]))
-			fork_cmd(info);
-		else if (*(info->arg) != '\n')
-		{
-			info->stat = 127;
-			prnt_error(info, "not found\n");
-		}
-	}
+		return (0);
 }
 
 /**
- * fork_cmd - forks a an exec thread to run cmd
- * @info: the parameter & return info struct
- *
- * Return: void
+ * _atoi - this function converts a string to an integer
+ * @st: string to be converted
+ * Return: return 0 if no numbers in string,
+ * converted number otherwise
  */
-void fork_cmd(info_t *info)
+
+int _atoi(char *st)
 {
-	pid_t child_pid;
+	int i, sgn = 1, flg = 0, output;
+	unsigned int r = 0;
 
-	child_pid = fork();
-	if (child_pid == -1)
+	for (i = 0; st[i] != '\0' && flg != 2; i++)
 	{
+		if (st[i] == '-')
+			sgn *= -1;
 
-		perror("Error:");
-		return;
-	}
-	if (child_pid == 0)
-	{
-		if (execve(info->pat, info->argv, get_environ(info)) == -1)
+		if (st[i] >= '0' && st[i] <= '9')
 		{
-			free_info(info, 1);
-			if (errno == EACCES)
-				exit(126);
-			exit(1);
+			flg = 1;
+			r *= 10;
+			r += (st[i] - '0');
 		}
-		
+		else if (flg == 1)
+			flg = 2;
 	}
+
+	if (sgn == -1)
+		output = -r;
 	else
-	{
-		wait(&(info->stat));
-		if (WIFEXITED(info->stat))
-		{
-			info->stat = WEXITSTATUS(info->stat);
-			if (info->stat == 126)
-				prnt_error(info, "Permission denied\n");
-		}
-	}
+		output = r;
+
+	return (output);
 }
 
