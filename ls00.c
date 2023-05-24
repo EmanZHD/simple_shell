@@ -75,12 +75,12 @@ list_t *add_nd_end(list_t **headnd, const char *strg, int numb)
 }
 
 /**
- * print_list_strg - this function prints only the strg
+ * prnt_list_strg - this function prints only the strg
  * element of a list_t linked list
  * @h: the pointer to first node
  * Return: return size of list
  */
-size_t print_list_strg(const list_t *h)
+size_t prnt_list_strg(const list_t *h)
 {
 	size_t i = 0;
 
