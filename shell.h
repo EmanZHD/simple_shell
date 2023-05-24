@@ -73,7 +73,13 @@ int _set_environment(info_t *info, char *var, char *value);
 void _free(info_t *str_adds, int all);
 void _clear(info_t *str_addr);
 void _setting(info_t *str_adds, char **av);
-
+int rd_history(info_t *info);
+int ls_history(info_t *info, char *buf, int linecount);
+int ptrfree(void **ptr);
+int wr_history(info_t *info);
+char *get_history(info_t *info);
+int ptrfree(void **ptr);
+int _history(info_t *info);
 
 
 
