@@ -15,29 +15,69 @@
 #include <fcntl.h>
 #include <errno.h>
 
-/*** BUFFERS ***/
-#define READ_BUF_SIZE 1024
-#define WRITE_BUF_SIZE 1024
-#define BUF_FLUSH -1
 
-/*** COMMAND ***/
+#define READ_BUFFER_SIZE 1024
+#define WRITE_BUFFER_SIZE 1024
+#define BUFFER_FLUSH -1
 #define CMD_NORM	0
 #define CMD_OR		1
 #define CMD_AND		2
 #define CMD_CHAIN	3
-
-/*** CONVERT ***/
 #define CONVERT_LOWERCASE	1
 #define CONVERT_UNSIGNED	2
-
-/*** 1 FOR getline() ***/
 #define USE_GETLINE 0
 #define USE_STRTOK 0
 
-#define HIST_FILE	".simple_shell_history"
+#define HIST_FILE	".simple_shell"
 #define HIST_MAX	4096
 
-extern char **environ;
+
+char *string_copy(char *dest, char *src, int n);
+string_conc - concatenates two strings;
+ssize_t _buffer_cmd(info_t *sstr_par, char **buf_addr, size_t *len_addr);
+ssize_t get_newline(info_t *str_par);
+void signalhandler(__attribute__((unused))int sign_num);
+int _getnewline(info_t *str_par, char **ptr, size_t *length);
+int exiting_shell(info_t *strc_func);
+int process_dir(info_t *strc_func);
+int _changdir(info_t *strc_func);
+int error_str_int(char *str);
+int puts_dec(int input, int fd);
+void putserr(info_t *strc_info, char *str_err);
+char *clone_itoa(long int num, int base, int arg);
+void delete_cmt(char *adress);
+int _lshistory(info_t *strc_func);
+int set_alias(info_t *strc_func, char *str);
+int setting_alias(info_t *strc_func, char *str);
+int put_alias(list_t *node);
+int _mimics(info_t *strc_func);
+int environment(info_t *strc_func);
+char *get_environement(info_t *strc_func, const char *name);
+int set_environement(info_t *strc_func);
+int rm_rnvironment(info_t *strc_func);
+int ls_environment(info_t *strc_func);
+void _puts(char *str);
+int _putchar(char carr);
+int _putsfd(char carr, int fd);
+int _print_fd(char *str, int fd);
+int conv_str_int(char *str);
+int char_alpha(int inchar);
+int dlm_string(char check, char *delimetre);
+int inter_active(info_t *sdr_address);
+char **_getenvironment(info_t *str_func);
+_rm_environment(info_t *str_func, char *var);
+char *_strchr(char *str, char chr);
+char *string_copy(char *destination, char *src, int n);
+char *string_conc(char *destination, char *src, int n);
+int _set_environment(info_t *info, char *var, char *value);
+void _free(info_t *str_adds, int all);
+void _clear(info_t *str_addr);
+void _setting(info_t *str_adds, char **av);
+
+
+
+
+extern char **environment;
 
 
 /**
@@ -65,8 +105,8 @@ typedef struct liststring
  * @lncount_flag: if on count this line of input
  * @fname: the program filename
  * @envr: a linked list local copy of environ
- * @environ: the custom modified copy of environ from LL envr
- * @histry: history node
+ * @environment: the custom modified copy of environ from LL envr
+ * @history: history node
  * @alia: alias node
  * @envr_changed: on if environ was changed
  * @stat: return status of the last exec'd command
@@ -92,149 +132,17 @@ typedef struct passinf
 	int envr_changed;
 	int stat;
 
-	char **cmd_bufr; /* pointer to cmd ; chain buffer, for memory mangement */
-	int cmd_bufr_type; /* CMD_type ||, &&, ; */
+	char **cmd_bufr;
+	int cmd_bufr_type;
 	int readfdd;
-	int histcount;
+	int histocount;
 } info_t;
 
 #define INFO_INIT \
 {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
 		0, 0, 0}
 
-/**
- * struct built - this function contains a builtin
- * string and related function
- * @type: builtin command flag
- * @funct: function
- */
-typedef struct built
-{
-	char *type;
-	int (*funct)(info_t *);
-} builtin_table;
 
-
-/*** FOR shloop.c ***/
-int hsh(info_t *, char **);
-int fnd_builtin(info_t *);
-void fnd_cmd(info_t *);
-void fork_cmd(info_t *);
-
-/*** FOR prsr.c ***/
-int is_cmd(info_t *, char *);
-char *dup_chars(char *, int, int);
-char *fnd_pat(info_t *, char *, char *);
-
-/*** FOR loophsh.c ***/
-int loophs(char **);
-
-/*** FOR errs00.c ***/
-void _epts(char *);
-int _eptchar(char);
-int _ptfdd(char c, int fdd);
-int _ptsfdd(char *strg, int fdd);
-
-/*** FOR str00.c ***/
-int _strglen(char *);
-int _strgcmp(char *, char *);
-char *starts_with(const char *, const char *);
-char *_strgcat(char *, char *);
-
-/*** FOR str01.c ***/
-char *_strgcpy(char *, char *);
-char *_strgdup(const char *);
-void _pts(char *);
-int _ptchar(char);
-
-/*** FOR exits.c ***/
-char *_strgncpy(char *, char *, int);
-char *_strgncat(char *, char *, int);
-char *_strgchr(char *, char);
-
-/*** FOR tokenfile.c ***/
-char **strgtow(char *, char *);
-char **strgtow2(char *, char);
-
-/*** FOR realloc.c ***/
-char *_memset(char *, char, unsigned int);
-void flfree(char **);
-void *_realloc(void *, unsigned int, unsigned int);
-
-/*** FOR memfile.c ***/
-int bffree(void **);
-
-/*** FOR atoi.c ***/
-int intractive(info_t *);
-int is_delm(char, char *);
-int _alpha(int);
-int _atoi(char *);
-
-/*** FOR errs01.c ***/
-int _erratoi(char *);
-void prnt_error(info_t *, char *);
-int prnt_d(int, int);
-char *cnvrt_numb(long int, int, int);
-void rmv_comments(char *);
-
-/*** FOR built00.c ***/
-int _forexit(info_t *);
-int _forchd(info_t *);
-int _forhelp(info_t *);
-
-/*** FOR built01.c ***/
-int _myhistry(info_t *);
-int _myalia(info_t *);
-
-/*** FOR getln.c ***/
-ssize_t get_inpt(info_t *);
-int _getln(info_t *, char **, size_t *);
-void sigintHandler(int);
-
-/*** FOR getinf.c ***/
-void clear_inf(info_t *);
-void set_inf(info_t *, char **);
-void free_inf(info_t *, int);
-
-/*** FOR envr.c ***/
-char *_getenvr(info_t *, const char *);
-int _myenvr(info_t *);
-int _mysetenvr(info_t *);
-int _myunsetenvr(info_t *);
-int populate_envr_list(info_t *);
-
-/*** FOR getenvr.c ***/
-char **get_environ(info_t *);
-int _unsetenvr(info_t *, char *);
-int _setenvr(info_t *, char *, char *);
-
-/*** FOR hstry.c ***/
-char *get_histry_file(info_t *info);
-int write_histry(info_t *info);
-int read_histry(info_t *info);
-int build_histry_list(info_t *info, char *bufr, int lncount);
-int renumb_histry(info_t *info);
-
-/*** FOR ls00.c ***/
-list_t *add_nd(list_t **, const char *, int);
-list_t *add_nd_end(list_t **, const char *, int);
-size_t prnt_list_strg(const list_t *);
-int delete_nd_at_index(list_t **, unsigned int);
-void free_list(list_t **);
-
-/*** FOR ls01.c ***/
-size_t list_len(const list_t *);
-char **list_to_strings(list_t *);
-size_t prnt_list(const list_t *);
-list_t *nd_starts_with(list_t *, char *, char);
-ssize_t get_nd_index(list_t *, list_t *);
-
-/*** FOR varfile.c ***/
-int is_chain(info_t *, char *, size_t *);
-void check_chain(info_t *, char *, size_t *, size_t, size_t);
-int replace_alia(info_t *);
-int replace_vars(info_t *);
-int replace_string(char **, char *);
 
 #endif
 
