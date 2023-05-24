@@ -5,7 +5,7 @@
 /**
  * add_nd - this function adds a node to the start of the list
  * @headnd: the address of pointer to headnd node
- * @strg: the strg field of node
+ * @strt: the strg field of node
  * @numb: the node index used by history
  * Return: return size of list
  */
@@ -75,8 +75,7 @@ list_t *add_nd_end(list_t **headnd, const char *strg, int numb)
 }
 
 /**
- * print_list_strg - this function prints only the strg
- * element of a list_t linked list
+ * print_list_strg - this function prints only the strg element of a list_t linked list
  * @h: the pointer to first node
  * Return: return size of list
  */
@@ -86,8 +85,8 @@ size_t print_list_strg(const list_t *h)
 
 	while (h)
 	{
-		_pts(h->strg ? h->strg : "(nil)");
-		_pts("\n");
+		_puts(h->strg ? h->strg : "(nil)");
+		_puts("\n");
 		h = h->nxt;
 		i++;
 	}
