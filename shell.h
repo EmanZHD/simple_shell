@@ -28,7 +28,7 @@
 extern char **environ;
 
 /**
- * struct passinfo - contains pseudo-arguements to pass into a function,
+ * struct coordinate - contains pseudo-arguements to pass into a function,
  * allowing uniform prototype for function pointer struct
  * @arg: a string generated from getline containing arguements
  * @argv:an array of strings generated from arg
@@ -49,27 +49,26 @@ extern char **environ;
  * @readfd: the fd from which to read line input
  * @histcount: the history line number count
  */
-typedef struct passinfo
+typedef struct coordinate
 {
-	char *arg;
-	char **argv;
-	char *path;
-	int argc;
-	unsigned int line_count;
-	int err_num;
-	int linecount_flag;
-	char *fname;
-	list_t *env;
-	list_t *history;
-	list_t *alias;
-	char **environ;
-	int env_changed;
-	int status;
+int err_num;
+int linecount_flag;
+char *fname;
+char **cmd_buf;
+int cmd_buf_type;
+int readfd;
+int histcount;
+list_t *history;
+char *arg;
+char **argv;
+char *path;
+int argc;
+unsigned int line_count;
+list_t *alias;
+char **environ;
+int env_changed;
+int status;
 
-	char **cmd_buf;
-	int cmd_buf_type;
-	int readfd;
-	int histcount;
 } pid_t;
 
 
@@ -175,8 +174,8 @@ int replace_string(char **, char *);
  */
 typedef struct builtin
 {
-	char *type;
-	int (*func)(pid_t *);
+char *type;
+int (*func)(pid_t *);
 } builtin_t;
 
 
@@ -191,9 +190,9 @@ typedef struct builtin
  */
 typedef struct liststr
 {
-	int num;
-	char *str;
-	struct liststr *next;
+int num;
+char *str;
+struct liststr *next;
 } list_t;
 
 
