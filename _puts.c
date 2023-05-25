@@ -6,9 +6,9 @@
 * @c: character to print
 * Return: return 1 for succes, -1 otherwise
 */
-int	_putchar(char c)
+int _putchar(char c)
 {
-	return (write(1, &c, 1));
+return (write(1, &c, 1));
 }
 
 /**
@@ -19,12 +19,12 @@ int	_putchar(char c)
 
 void _printf(const char *s1)
 {
-	int a = 0;
+int a = 0;
 
-	while (s1[a] != '\0')
-	{
-		_putchar(s1[a]);
-		a++;
-	}
+while (s1[a] != '\0')
+{
+_putchar(s1[a]);
+a++;
+}
 }
 

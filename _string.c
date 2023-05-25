@@ -8,11 +8,11 @@
 
 int _strlen(char *str)
 {
-	int a = 0;
+int a = 0;
 
-	while (str[a] != '\0')
-		a++;
-	return (a);
+while (str[a] != '\0')
+a++;
+return (a);
 }
 
 /**
@@ -25,16 +25,16 @@ int _strlen(char *str)
 
 char *_strcpy(char *dest, char *src)
 {
-	int a;
+int a;
 
-	a = 0;
-	while (src[a] != '\0')
-	{
-		dest[a] = src[a];
-		a++;
-	}
-	dest[a] = '\0';
-	return (dest);
+a = 0;
+while (src[a] != '\0')
+{
+dest[a] = src[a];
+a++;
+}
+dest[a] = '\0';
+return (dest);
 }
 
 /**
@@ -46,20 +46,20 @@ char *_strcpy(char *dest, char *src)
 
 char *_strcat(char *dest, char *src)
 {
-	int a;
-	int b;
+int a;
+int b;
 
-	a = 0;
-	while (dest[a] != '\0')
-		a++;
-	b = 0;
-	while (src[b] != '\0')
-	{
-		dest[a + b] = src[b];
-		b++;
-	}
-	dest[a + b] = '\0';
-	return (dest);
+a = 0;
+while (dest[a] != '\0')
+a++;
+b = 0;
+while (src[b] != '\0')
+{
+dest[a + b] = src[b];
+b++;
+}
+dest[a + b] = '\0';
+return (dest);
 }
 
 /**
@@ -71,12 +71,12 @@ char *_strcat(char *dest, char *src)
 
 int _strcmp(char *s1, char *s2)
 {
-	int a = 0;
+int a = 0;
 
-	for (; s1[a] != '\0' && s2[a] != '\0' && s1[a] == s2[a]; a++)
-		;
+for (; s1[a] != '\0' && s2[a] != '\0' && s1[a] == s2[a]; a++)
+;
 
-	return (s1[a] - s2[a]);
+return (s1[a] - s2[a]);
 }
 
 /**
@@ -88,22 +88,22 @@ int _strcmp(char *s1, char *s2)
 
 char *_strdup(const char *s1)
 {
-	char	*dup;
-	int		a;
+char *dup;
+int a;
 
-	a = 0;
-	while (s1[a])
-		a++;
-	dup = (char *)malloc(sizeof(char) * a + 1);
-	a = 0;
-	if (!dup)
-		return (NULL);
-	while (s1[a])
-	{
-		dup[a] = s1[a];
-		a++;
-	}
-	dup[a] = '\0';
-	return (dup);
+a = 0;
+while (s1[a])
+a++;
+dup = (char *)malloc(sizeof(char) * a + 1);
+a = 0;
+if (!dup)
+return (NULL);
+while (s1[a])
+{
+dup[a] = s1[a];
+a++;
+}
+dup[a] = '\0';
+return (dup);
 }
 
