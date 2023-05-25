@@ -6,8 +6,8 @@
 
 void display_prompt()
 {
-  printf(">> ");
-  fflush(stdout);
+printf(">> ");
+fflush(stdout);
 }
 
 /**
@@ -19,9 +19,24 @@ void display_prompt()
  *Return:...
  */
 
-int execute_command(char *command, char *arguments[])
+void execute_command(const char *command)
 {
 
-  execvp(command, arguments);
-  return (-1);
+pid_t pid = fork();
+
+if (pid < 0)
+{
+perror("fork");
+exit(EXIT_FAILURE);
+}
+else if (pid == 0)
+{
+execlp(command, command, NULL);
+perror("execvp");
+exit(EXIT_FAILURE);
+}
+else
+{
+waitpid(pid, NULL, 0);
+}
 }
