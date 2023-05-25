@@ -72,7 +72,7 @@ char **environ;
 int env_changed;
 int status;
 list_t *env;
-} pid_t;
+} pide_t;
 
 
 void _eputs(char *);
@@ -85,14 +85,14 @@ int _strcmp(char *, char *);
 char *starts_with(const char *, const char *);
 char *_strcat(char *, char *);
 
-int is_cmd(pid_t *, char *);
+int is_cmd(pide_t *, char *);
 char *dup_chars(char *, int, int);
-char *find_path(pid_t *, char *, char *);
+char *find_path(pide_t *, char *, char *);
 
-int hsh(pid_t *, char **);
-int find_builtin(pid_t *);
-void find_cmd(pid_t *);
-void fork_cmd(pid_t *);
+int hsh(pide_t *, char **);
+int find_builtin(pide_t *);
+void find_cmd(pide_t *);
+void fork_cmd(pide_t *);
 
 int loophsh(char **);
 
@@ -107,7 +107,7 @@ char *_memset(char *, char, unsigned int);
 void ffree(char **);
 void *_realloc(void *, unsigned int, unsigned int);
 
-int interactive(pid_t *);
+int interactive(pide_t *);
 int is_delim(char, char *);
 int _isalpha(int);
 int _atoi(char *);
@@ -115,42 +115,42 @@ int _atoi(char *);
 int bfree(void **);
 
 int _erratoi(char *);
-void print_error(pid_t *, char *);
+void print_error(pide_t *, char *);
 int print_d(int, int);
 char *convert_number(long int, int, int);
 void remove_comments(char *);
 
-int _myhistory(pid_t *);
-int _myalias(pid_t *);
+int _history(pide_t *);
+int _alias(pide_t *);
 
-int _myexit(pid_t *);
-int _mycd(pid_t *);
-int _myhelp(pid_t *);
+int _exit(pide_t *);
+int _cd(pide_t *);
+int _help(pide_t *);
 
-char *_getenv(pid_t *, const char *);
-int _myenv(pid_t *);
+char *_getenv(pide_t *, const char *);
+int _environment(pide_t *);
 
-ssize_t get_input(pid_t *);
-int _getline(info_t *, char **, size_t *);
+ssize_t get_input(pide_t *);
+int _getline(pide_t *, char **, size_t *);
 void sigintHandler(int);
 
-void clear_info(pid_t *);
-void set_info(pid_t *, char **);
-void free_info(pid_t *, int);
+void clear_info(pide_t *);
+void set_info(pide_t *, char **);
+void free_info(pide_t *, int);
 
-int _mysetenv(pid_t *);
-int _myunsetenv(pid_t *);
-int populate_env_list(pid_t *);
+int _setenv(pide_t *);
+int _usetenv(pide_t *);
+int populate_env_list(pide_t *);
 
-char *get_history_file(pid_t *info);
-int write_history(pid_t *info);
-int read_history(pid_t *info);
-int build_history_list(pid_t *info, char *buf, int linecount);
-int renumber_history(pid_t *info);
+char *get_history_file(pide_t *str_pat);
+int write_history(pide_t *str_pat);
+int read_history(pide_t *str_pat);
+int build_history_list(pide_t *str_pat, char *buf, int linecount);
+int renumber_history(pide_t *str_pat);
 
-char **get_environ(pid_t *);
-int _unsetenv(pid_t *, char *);
-int _setenv(pid_t *, char *, char *);
+char **get_environ(pide_t *);
+int _unsetenv(pide_t *, char *);
+int _setenv(pide_t *, char *, char *);
 
 size_t list_len(const list_t *);
 char **list_to_strings(list_t *);
@@ -164,10 +164,10 @@ size_t print_list_str(const list_t *);
 int delete_node_at_index(list_t **, unsigned int);
 void free_list(list_t **);
 
-int is_chain(pid_t *, char *, size_t *);
-void check_chain(pid_t *, char *, size_t *, size_t, size_t);
-int replace_alias(pid_t *);
-int replace_vars(pid_t *);
+int is_chain(pide_t *, char *, size_t *);
+void check_chain(pide_t *, char *, size_t *, size_t, size_t);
+int replace_alias(pide_t *);
+int replace_vars(pide_t *);
 int replace_string(char **, char *);
 
 /**
