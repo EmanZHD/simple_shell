@@ -68,7 +68,7 @@ list_t *alias;
 char **environ;
 int env_changed;
 int status;
-
+list_t *env;
 } pid_t;
 
 
