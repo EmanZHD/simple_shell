@@ -34,3 +34,4 @@ int is_exit_command(char *command);
 int is_env_command(char *command);
 void print_environment();
 int main();
+int exec_cmd();
